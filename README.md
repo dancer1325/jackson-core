@@ -53,71 +53,83 @@
     * | Maven repository or
     * links on [Wiki](../../wiki)
   * == functional OSGi bundle / import/export declarations
+    * -> can be used | OSGi container
+  * from Jackson v2.10+
+    * `module-info.class` definitions are included -> jar == proper Java module (JPMS)
 
 * `JUnit`
   * 1! external dependency
 
 ## Non-Maven
 
-* TODO:
-For non-Maven use cases, you download jars from [Central Maven repository](https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-core/).
-
-Core jar is also a functional OSGi bundle, with proper import/export declarations, so it can be use on OSGi container as is.
-
-Jackson 2.10 and above include `module-info.class` definitions so the jar is also a proper Java module (JPMS).
-
-Jackson 2.12 and above include additional Gradle 6 Module Metadata for version alignment with Gradle.
+* download jars
+* from Jackson v2.12+
+  * additional Gradle v6 Module Metadata -> version alignment with Gradle
 
 -----
+
 # Use it!
 
 ## General
 
-Usage typically starts with creation of a reusable (and thread-safe, once configured) `JsonFactory` instance:
+* create `JsonFactory` instance
+  * if you configure it -> thread-safe
 
-```java
-// Builder-style since 2.10:
-JsonFactory factory = JsonFactory.builder()
-// configure, if necessary:
-     .enable(JsonReadFeature.ALLOW_JAVA_COMMENTS)
-     .build();
-
-// older 2.x mechanism, still supported for 2.x
-JsonFactory factory = new JsonFactory();
-// configure, if necessary:
-factory.enable(JsonReadFeature.ALLOW_JAVA_COMMENTS);
-```
-
-Alternatively, you have an `ObjectMapper` (from [Jackson Databind package](https://github.com/FasterXML/jackson-databind)) handy; if so, you can do:
-
-```java
-JsonFactory factory = objectMapper.getFactory();
-```
+      ```java
+      // 1. Builder-style since 2.10:
+      JsonFactory factory = JsonFactory.builder()         
+      // configure, if necessary:
+           .enable(JsonReadFeature.ALLOW_JAVA_COMMENTS)
+           .build();
+    
+      // 2. older 2.x mechanism, still supported for 2.x
+      JsonFactory factory = new JsonFactory();
+      // configure, if necessary:
+      factory.enable(JsonReadFeature.ALLOW_JAVA_COMMENTS);
+    
+     // 3. `ObjectMapper` -- from -- Jackson Databind package
+     JsonFactory factory = objectMapper.getFactory();      
+      ```
 
 ## Usage, simple reading
 
-All reading is by using `JsonParser` (or its sub-classes, in case of data formats other than JSON),
-instance of which is constructed by `JsonFactory`.
-
-An example can be found from [Reading and Writing Event Streams](http://www.cowtowncoder.com/blog/archives/2009/01/entry_132.html)
+* `JsonParser` or its subclasses ( for data formats != JSON)
+  * allows
+    * reading
+  * instance -- can be created via -- `JsonFactory`
+  * _Example:_ [Reading and Writing Event Streams](http://www.cowtowncoder.com/blog/archives/2009/01/entry_132.html)
+    * TODO:
 
 ## Usage, simple writing
 
-All writing is by using `JsonGenerator` (or its sub-classes, in case of data formats other than JSON),
-instance of which is constructed by `JsonFactory`:
-
-An example can be found from [Reading and Writing Event Streams](http://www.cowtowncoder.com/blog/archives/2009/01/entry_132.html)
+* `JsonGenerator` or its subclasses ( for data formats != JSON)
+  * allows
+    * writing
+  * instance -- can be created via -- `JsonFactory`
+  * _Example:_ [Reading and Writing Event Streams](http://www.cowtowncoder.com/blog/archives/2009/01/entry_132.html)
+    * TODO:
 
 ## Processing limits
 
-Starting with [Jackson 2.15](https://github.com/FasterXML/jackson/wiki/Jackson-Release-2.15), Jackson has configurable limits for some aspects of input decoding and output generation.
-
-Implemented limits are:
-
-* Length are expressed in input/output units -- `byte`s or `char`s -- depending on input source
-* Defined as longest allowed length, but not necessarily imposed at 100% accuracy: that is, if maximum allowed length is specified as 1000 units, something with length of, say 1003 may not cause exception (but 1500 would typically do)
-* Defined using new `StreamReadConstraints` / `StreamWriteConstraints` classes, configurable on per-`JsonFactory` basis
-* Main focus is to reduce likelihood of excessive memory usage/retention and/or processing costs; not validation
+* requirements
+  * [Jackson v2.15+](https://github.com/FasterXML/jackson/wiki/Jackson-Release-2.15)
+* == configurable limits
+  * 👁️about some aspects of 👁️ 
+    * input decoding
+    * output generation
+  * -- are defined 
+    * via -- new `StreamReadConstraints` or `StreamWriteConstraints` classes /
+      * configurable / `JsonFactory` basis 
+    * -- <= length, ⚠️BUT NOT necessarily imposed ⚠️
+      * _Example:_ if maximum allowed length is 1000 units & there is something with length 1003 -- may NOT cause -- exception (but 1500 is MORE probable to fail)
+  * allows
+    * reducing likelihood of excessive
+      * memory usage/retention
+      * processing costs / WITHOUT validation  
+  * length is expressed in input/output units
+    * -- depending on -- input source
+      * `byte`s
+      * `char`s
 
 ### Input parsing limits
 
@@ -134,23 +146,27 @@ Implemented limits are:
 
 ### Output generation limits
 
-* Maximum Output nesting depth (2.16+): (see https://github.com/FasterXML/jackson-core/pull/1055)
-    * Default: 1000 levels
+* Maximum Output nesting depth
+  * requirements
+    * Jackson v2.16+
+  * https://github.com/FasterXML/jackson-core/pull/1055
+  * default: 1000 levels
 
 ### Re-configuring limits
 
-You can change per-factory limits as follows:
+* way to change per-factory limits
 
-```java
-JsonFactory f = JsonFactory.builder()
-  .streamReadConstraints(StreamReadConstraints.builder().maxDocumentLength(10_000_000L).build())
-  .streamReadConstraints(StreamReadConstraints.builder().maxNumberLength(250).build())
-  .streamWriteConstraints(StreamWriteConstraints.builder().maxNestingDepth(2000).build())
-  .build();
-```
+    ```java
+    JsonFactory f = JsonFactory.builder()
+      .streamReadConstraints(StreamReadConstraints.builder().maxDocumentLength(10_000_000L).build())
+      .streamReadConstraints(StreamReadConstraints.builder().maxNumberLength(250).build())
+      .streamWriteConstraints(StreamWriteConstraints.builder().maxNestingDepth(2000).build())
+      .build();
+    ```
 
 ## Error Report Configuration
 
+* TODO:
 Starting with [Jackson 2.16](https://github.com/FasterXML/jackson/wiki/Jackson-Release-2.16), Jackson offers configurable
 behavior around error-reporting.
 
