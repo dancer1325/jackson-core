@@ -4,7 +4,7 @@
   * generator abstractions
     * used by [Jackson Data Processor](https://github.com/FasterXML/jackson)
   * 👁️NOT JSON specific 👁️
-    * ALTHOUGH naming does contain 'JSON'
+    * ALTHOUGH some naming does contain 'JSON'
       * REASON: 🧠historical reasons 🧠
     * 👁️EXCEPT TO packages / contain word 'json'👁️
   * uses
