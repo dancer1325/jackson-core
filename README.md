@@ -1,24 +1,26 @@
 # Overview
 
-This project contains core low-level incremental ("streaming") parser and generator abstractions used by
-[Jackson Data Processor](https://github.com/FasterXML/jackson).
-It also includes the default implementation of handler types (parser, generator) that handle JSON format.
-The core abstractions are not JSON specific, although naming does contain 'JSON' in many places, due to historical reasons. Only packages that specifically contain word 'json' are JSON-specific.
-
-This package is the base on which [Jackson data-binding](https://github.com/FasterXML/jackson-databind) package builds on.
-It is licensed under [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
-
-Alternate data format implementations (like
-[Smile (binary JSON)](https://github.com/FasterXML/jackson-dataformats-binary/tree/master/smile),
-[XML](https://github.com/FasterXML/jackson-dataformat-xml),
-[CSV](https://github.com/FasterXML/jackson-dataformats-text/tree/master/csv),
-[Protobuf](https://github.com/FasterXML/jackson-dataformats-binary/tree/master/protobuf),
-and [CBOR](https://github.com/FasterXML/jackson-dataformats-binary/tree/master/cbor))
-also build on this base package, implementing the core interfaces,
-making it possible to use standard [data-binding package](https://github.com/FasterXML/jackson-databind) regardless of underlying data format.
-
-Project contains versions 2.0 and above: source code for earlier (1.x) versions can be found from
-[Jackson-1](../../../jackson-1) github repo.
+* == core low-level incremental ("streaming") parser + generator abstractions + default implementation of handler types (parser, generator) / handle JSON format 
+  * generator abstractions
+    * used by [Jackson Data Processor](https://github.com/FasterXML/jackson)
+  * 👁️NOT JSON specific 👁️
+    * ALTHOUGH naming does contain 'JSON'
+      * REASON: 🧠historical reasons 🧠
+    * 👁️EXCEPT TO packages / contain word 'json'👁️
+  * uses
+    * base of [Jackson data-binding](https://github.com/FasterXML/jackson-databind)
+    * 👁️by other data format implementations / implement the core interfaces 👁️ 
+      * _Example:_
+        * [Smile (binary JSON)](https://github.com/FasterXML/jackson-dataformats-binary/tree/master/smile)
+        * [XML](https://github.com/FasterXML/jackson-dataformat-xml)
+        * [CSV](https://github.com/FasterXML/jackson-dataformats-text/tree/master/csv)
+        * [Protobuf](https://github.com/FasterXML/jackson-dataformats-binary/tree/master/protobuf)
+        * [CBOR](https://github.com/FasterXML/jackson-dataformats-binary/tree/master/cbor)
+      * -> can use [data-binding package](https://github.com/FasterXML/jackson-databind)
+* Available versions
+  * v2.0+
+  * v1.x
+    * check [Jackson-1](../../../jackson-1) github repo
 
 ## Status
 
@@ -36,26 +38,28 @@ Project contains versions 2.0 and above: source code for earlier (1.x) versions 
 
 ## Maven
 
-Functionality of this package is contained in 
-Java package `com.fasterxml.jackson.core`.
+* add it | "pom.xml"
 
-To use the package, you need to use following Maven dependency:
+    ```xml
+    <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>${jackson.version.core}</version>
+    </dependency>
+    ```
 
-```xml
-<dependency>
-    <groupId>com.fasterxml.jackson.core</groupId>
-    <artifactId>jackson-core</artifactId>
-    <version>${jackson.version.core}</version>
-</dependency>
-```
+* jars
+  * you can download
+    * | Maven repository or
+    * links on [Wiki](../../wiki)
+  * == functional OSGi bundle / import/export declarations
 
-or download jars from Maven repository or links on [Wiki](../../wiki).
-Core jar is a functional OSGi bundle, with proper import/export declarations.
-
-Package has no external dependencies, except for testing (which uses `JUnit`).
+* `JUnit`
+  * 1! external dependency
 
 ## Non-Maven
 
+* TODO:
 For non-Maven use cases, you download jars from [Central Maven repository](https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-core/).
 
 Core jar is also a functional OSGi bundle, with proper import/export declarations, so it can be use on OSGi container as is.
